@@ -4,5 +4,11 @@ class Board:
         initializeState()
 
     def initializeState(self, size):
-        #TODO : make state representation
-        self.state = [[ 0 for row in range(constant.SIZE)] for column in range(constant.SIZE)]
+        self.state = [[ constant.EMPTY for row in range(constant.SIZE)] for column in range(constant.SIZE)]
+        initializeStartPiece()
+    
+    def initializeStartPiece(self):
+        self.state[3][3] = constant.WHITE
+        self.state[4][4] = constant.WHITE
+        self.state[4][3] = constant.BLACK
+        self.state[3][4] = constant.BLACK
