@@ -1,6 +1,7 @@
 import constant
 import step
 
+
 class Board:
     # Private
     def __init__(self):
