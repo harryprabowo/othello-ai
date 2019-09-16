@@ -1,4 +1,5 @@
 SIZE = 8
+INFVAL = 999
 
 # pieces
 EMPTY = 0
