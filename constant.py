@@ -1,5 +1,5 @@
 SIZE = 8
-INFVAL = 999
+DEFAULTDEPTH = 2
 
 # pieces
 EMPTY = 0
