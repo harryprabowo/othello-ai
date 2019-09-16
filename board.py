@@ -4,21 +4,21 @@ import step
 class Board:
     # Private
     def __init__(self):
-        self.__initializeState()
+        self.__initialize_state()
 
-    def __initializeState(self):
+    def __initialize_state(self):
         self.state = [[ constant.EMPTY for row in range(constant.SIZE)] for column in range(constant.SIZE)]
-        self.__initializeStartPiece()
+        self.__initialize_start_piece()
 
-    def __initializeStartPiece(self):
+    def __initialize_start_piece(self):
         self.state[3][3] = constant.WHITE
         self.state[4][4] = constant.WHITE
         self.state[4][3] = constant.BLACK
         self.state[3][4] = constant.BLACK
 
     # Public
-    def getState(self):
+    def get_state(self):
         return self.state
 
-    def changeState(self, step):
+    def change_state(self, step):
         self.state[step.row][step.column] = step.piece
