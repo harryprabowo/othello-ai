@@ -24,79 +24,63 @@ class Board:
     def change_state(self, step):
         self.state[step.row][step.column] = step.piece
 
-    def isOnBoard(step.row, step.column):
-        #mengecek apakah pada Arena atau gak
-        return step.row >= 0 and step.row <= 7 and step.column >= 0 and step.column <= 7
+    def isOnBoard(self, row, column):
+        return row >= 0 and row <= 7 and column >= 0 and column <= 7
 
-    def isValidMove(self, tile, posx, posy):
-        #mengecek apakah langkah valid
-        kosong = ' '
-        if self[posx][posy] != kosong or not isOnBoard(posx, posy):
+    def isValidMove(self, piece, row, col):
+        if self.state[row][col] != constant.EMPTY or not isOnBoard(row, col):
             return False
-        self[posx][posy] = tile
-        if tile == constant.WHITE:
-            otherTile = constant.BLACK
-        else:
-            otherTile = constant.WHITE
-        tilesToFlip = []
-        for xdirect, ydirect in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]:
-            #[0, 1] berarti ke bawah
-            #[1, 1] berarti ke kiri bawah
-            #[1, 0] berarti ke kiri
-            #[1, -1] berarti ke kiri atas
-            #[0, -1] berarti ke atas
-            #[-1, -1] berarti ke kanan atas
-            #[-1, 0] berarti ke kanan
-            #[-1, 1] berarti ke kanan bawah
-            step.row, step.column = posx, posy
-            step.row += xdirect #first step in the direction
-            step.column += ydirect #first step in the direction
-            if isOnBoard(step.row, step.column) and self[step.row][step.coumn] == otherTile:
-                step.row += xdirect
-                step.column += ydirect
-                if not isOnBoard(step.row, step.column):
+        self.state[row][col] = piece
+        other_piece = constant.BLACK if piece == constant.WHITE else constant.WHITE
+        pieces_to_flip = []
+        for row_direction, col_direction in constant.DIRECTION:
+            row, column = row, col
+            row += row_direction #first step in the direction
+            column += col_direction #first step in the direction
+            if isOnBoard(row, column) and self.state[row][column] == other_piece:
+                row += row_direction
+                column += col_direction
+                if not isOnBoard(row, column):
                     continue
-                while self[step.row][step.column] == otherTile:
-                    step.row += xdirect
-                    step.column += ydirect
-                    if not isOnBoard(step.row, step.column): #break out of while loop, then continue in for loop
+                while self.state[row][column] == other_piece:
+                    row += row_direction
+                    column += col_direction
+                    if not isOnBoard(row, column): #break out of while loop, then continue in for loop
                         break
-                if not isOnBoard(step.row, step.column):
+                if not isOnBoard(row, column):
                     continue
-                if self[step.row][step.column] == tile:
+                if self.state[row][column] == piece:
                     #There are pieces to flip over. Go in the reverse direction until we reach the original space, noting all the tiles along the way.
                     while True:
-                        step.row -= xdirect
-                        step.column -= ydirect
-                        if step.row == posx and step.column == posy:
+                        row -= row_direction
+                        column -= col_direction
+                        if row == row and column == col:
                             break
-                        tilesToFlip.append([step.row, step.column])
+                        pieces_to_flip.append([row, column])
 
         self[posx][posy] = ' ' #restore the empty space
-        if len(tilesToFlip) == 0: #If no tiles were flipped, this is not a valid move.
+        if len(pieces_to_flip) == 0: #If no tiles were flipped, this is not a valid move.
             return False
-        return tilesToFlip
+        return pieces_to_flip
 
-    def getValidMoves(self, tile):
+    def getValidMoves(self, piece):
         #langkah valid
         validMoves = []
-        for step.row in range(8):
-            for step.column in range(8):
-                if isValidMove(self, tile, step.row, step.column) != False:
-                    validMoves.append([step.row, step.column])
+        for row in range(8):
+            for column in range(8):
+                if self.isValidMove(piece, row, column) != False:
+                    validMoves.append([row, column])
         return validMoves
 
     def getBoardCopy(self):
         #copy board
-        copyBoard = __init__(self)
-        for step.row in range(8):
-            for step.column in range(8):
-                copyBoard[step.row][step.column] = self[step.row][step.column]
+        copyBoard = Board()
+        copyBoard.state = self.state
         return copyBoard
 
-    def getBoardWithValidMoves(self, tile):
+    def getBoardWithValidMoves(self, piece):
         #nunjukin langkah valid
-        copyBoard = getBoardCopy(self)
-        for step.row, step.column in getValidMoves(copyBoard, self):
-            copyBoard[step.row][step.column] = '.'
+        copyBoard = self.getBoardCopy()
+        for row, column in getValidMoves(copyBoard, self):
+            copyBoard[row][column] = '.'
         return copyBoard
