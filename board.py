@@ -1,5 +1,5 @@
 import constant
-import step
+from step import Step
 
 
 class Board:
@@ -24,41 +24,44 @@ class Board:
     def change_state(self, step):
         self.state[step.row][step.column] = step.piece
 
-    def isOnBoard(self, row, column):
+    def is_on_board(self, row, column):
         return row >= 0 and row <= 7 and column >= 0 and column <= 7
 
-    def isValidMove(self, piece, row, col):
-        if self.state[row][col] != constant.EMPTY or not isOnBoard(row, col):
+    def is_empty(self, row, column):
+        return self.state[row][column]
+
+    def isValidMove(self, piece, row, column):
+        if (not (self.is_empty(row,column) or self.is_on_board(row, column))):
             return False
-        self.state[row][col] = piece
+        self.state[row][column] = piece
         other_piece = constant.BLACK if piece == constant.WHITE else constant.WHITE
         pieces_to_flip = []
-        for row_direction, col_direction in constant.DIRECTION:
-            row, column = row, col
-            row += row_direction #first step in the direction
-            column += col_direction #first step in the direction
-            if isOnBoard(row, column) and self.state[row][column] == other_piece:
-                row += row_direction
-                column += col_direction
-                if not isOnBoard(row, column):
+        for row_direction, column_direction in constant.DIRECTION:
+            step = Step(row, column)
+            step.row += row_direction #first step in the direction
+            step.column += column_direction #first step in the direction
+            if self.is_on_board(step.row, step.column) and self.state[step.row][step.column] == other_piece:
+                step.row += row_direction
+                step.column += column_direction
+                if not self.is_on_board(step.row, step.column):
                     continue
-                while self.state[row][column] == other_piece:
-                    row += row_direction
-                    column += col_direction
-                    if not isOnBoard(row, column): #break out of while loop, then continue in for loop
+                while self.state[step.row][step.column] == other_piece:
+                    step.row += row_direction
+                    step.column += column_direction
+                    if not self.is_on_board(step.row, step.column): #break out of while loop, then continue in for loop
                         break
-                if not isOnBoard(row, column):
+                if not self.is_on_board(step.row, step.column):
                     continue
-                if self.state[row][column] == piece:
+                if self.state[step.row][step.column] == piece:
                     #There are pieces to flip over. Go in the reverse direction until we reach the original space, noting all the tiles along the way.
                     while True:
-                        row -= row_direction
-                        column -= col_direction
-                        if row == row and column == col:
+                        step.row -= row_direction
+                        step.rowcolumn -= column_direction
+                        if row == row and column == column:
                             break
-                        pieces_to_flip.append([row, column])
+                        pieces_to_flip.append([step.row, step.column])
 
-        self[posx][posy] = ' ' #restore the empty space
+        self.state[row][column] = constant.EMPTY #restore the empty space
         if len(pieces_to_flip) == 0: #If no tiles were flipped, this is not a valid move.
             return False
         return pieces_to_flip
