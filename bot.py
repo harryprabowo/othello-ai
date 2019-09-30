@@ -14,18 +14,23 @@ class Bot:
         if remaining_depth == 0:
             return self.__evaluate_state(current_state)
         else:
-            # TODO
             possible_step = self.__generate_possible_step(current_state, current_player)
+            best_value = -999 if (self.piece_color == current_player) else 999
             for step in possible_step:
                 next_state = self.__change_state(step, current_state)
                 value = self.dfs(next_state, self.__enemy_of(current_player), remaining_depth - 1, alpha, beta)
                 if current_player == self.piece_color:
+                    best_value = max(best_value, value)
                     alpha = max(alpha, value)
                 else:
+                    best_value = min(best_value, value)
                     beta = min(beta, value)
-                if beta >= alpha:
+                if beta <= alpha:
                     break
-            return 1
+            return best_value
+
+    def __square_list(self):
+        return [i for i in range(11, 89) if 1 <= (i % 10) <= 8]
 
     def __generate_possible_step(self, current_state, current_player):
         # TODO
@@ -34,8 +39,11 @@ class Bot:
         return valid_step
 
     def __evaluate_state(self, state):
-        # TODO
-        return 1
+        res = 0
+        for square in self.__square_list():
+            modifier = 1 if (state[square] == self.piece_color) else -1
+            res += constant.BOARD_VALUE[square] * modifier
+        return res
 
     def __change_state(self, step, state):
         state[step.row][step.column] = step.piece
