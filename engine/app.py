@@ -1,9 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 from bot import *
 from board import *
 import random
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 board = None
 bot = None
 mode = 0
@@ -29,6 +32,7 @@ def move_bot(current_player):
 
 
 @app.route('/api/move', methods=['POST'])
+@cross_origin()
 def api():
     global board
     current_player = int(request.json['player'])
@@ -41,6 +45,7 @@ def api():
 
 
 @app.route('/api/start', methods=['POST'])
+@cross_origin()
 def start():
     global board, bot, mode, ai, DEFAULT_DEPTH
     board = Board()
