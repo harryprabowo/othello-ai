@@ -81,3 +81,8 @@ class Board:
             print("{}  ".format(self.state[i]), end='')
             if i % 10 == 9:
                 print()
+
+if __name__ == "__main__":
+    board = Board()
+    board.draw_board()
+    print(board.possible_moves(BLACK))

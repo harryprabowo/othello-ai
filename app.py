@@ -24,13 +24,10 @@ def api():
 def start():
     global board, bot, mode, ai
     board = Board()
-    human_player = request.form.get('player')
+    human_player = int(request.json['player'])
     mode = request.form.get('mode')
     ai = request.form.get('ai')
     bot = Bot(board, enemy_of(human_player))
-    #if human_player == constant.WHITE:
-    #    bot_move = bot.move(board.get_state())[1]
-    #    board.make_move(bot_move, human_player)
     print(board.get_state())
     return jsonify(state=board.get_state(), possible_move=board.possible_moves(human_player))
 
