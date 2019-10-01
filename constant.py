@@ -5,6 +5,7 @@ DEFAULTDEPTH = 2
 EMPTY = 0
 WHITE = 1
 BLACK = 2
+BORDER = 3
 
 # directions
 UP, DOWN, LEFT, RIGHT = -10, 10, -1, 1
