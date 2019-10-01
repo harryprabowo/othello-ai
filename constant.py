@@ -3,8 +3,8 @@ DEFAULT_DEPTH = 2
 
 # pieces
 EMPTY = 0
-WHITE = 1
-BLACK = 2
+BLACK = 1
+WHITE = 2
 BORDER = 3
 
 # directions

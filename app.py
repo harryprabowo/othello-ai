@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     board = Board()
-    bot = Bot(board, constant.WHITE)
+    bot = Bot(board, constant.BLACK)
     state = bot.move(board.get_state())
     return jsonify(state)
 
