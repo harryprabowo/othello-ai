@@ -18,17 +18,17 @@ class Bot:
         else:
             possible_step = self.board.possible_moves(current_player)
             if not possible_step:
-                if not self.board.possible_moves(self.__enemy_of(current_player)):
+                if not self.board.possible_moves(enemy_of(current_player)):
                     return self.__final_value(current_state), None
                 else:
-                    return -self.dfs(current_state, self.__enemy_of(current_player), remaining_depth - 1, -beta, -alpha)[0], None
+                    return -self.dfs(current_state, enemy_of(current_player), remaining_depth - 1, -beta, -alpha)[0], None
             best_value = -999 if (self.piece_color == current_player) else 999
             best_move = 0
             for step in possible_step:
                 next_board = Board(current_state.copy())
                 next_board.make_move(step, current_player)
                 next_state = next_board.get_state()
-                value = -self.dfs(next_state, self.__enemy_of(current_player), remaining_depth - 1, -beta, -alpha)[0]
+                value = -self.dfs(next_state, enemy_of(current_player), remaining_depth - 1, -beta, -alpha)[0]
                 if current_player == self.piece_color:
                     if best_value < value:
                         best_value = value
@@ -53,7 +53,7 @@ class Bot:
             return score
 
     def __score(self, state):
-        return state.count(self.piece_color) - state.count(self.__enemy_of(self.piece_color))
+        return state.count(self.piece_color) - state.count(enemy_of(self.piece_color))
 
     def __square_list(self):
         return [i for i in range(11, 89) if 1 <= (i % 10) <= 8]
@@ -64,9 +64,3 @@ class Bot:
             modifier = 1 if (state[square] == self.piece_color) else -1
             res += constant.BOARD_VALUE[square] * modifier
         return res
-
-    def __enemy_of(self, current_player):
-        if current_player == constant.WHITE:
-            return constant.BLACK
-        else:
-            return constant.WHITE
