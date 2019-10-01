@@ -5,12 +5,14 @@ from board import *
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/api')
 def hello():
     board = Board()
     bot = Bot(board, constant.BLACK)
-    state = bot.move(board.get_state())
-    return jsonify(state)
+    current_player = constant.BLACK
+    bot_move = bot.move(board.get_state())[1]
+    board.make_move(bot_move, current_player)
+    return jsonify([board.get_state(), board.possible_moves(current_player)])
 
 
 if __name__ == '__main__':
