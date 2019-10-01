@@ -1,1 +1,1 @@
-# congklak-ai
+# othello-ai
