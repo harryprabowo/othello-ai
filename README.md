@@ -11,8 +11,7 @@ yarn start
 and the backend:
 
 ```
-cd engine
-app.py
+yarn start:api
 ```
 
 Project written in React and Flask.
