@@ -4,5 +4,5 @@ class Step:
         self.column = column
         self.piece = piece
 
-    def getStateValue(self):
+    def get_state_value(self):
         return self.row * 10 + self.column;

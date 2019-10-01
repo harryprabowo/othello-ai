@@ -24,7 +24,10 @@ class Board:
         self.state[55] = WHITE
 
     # Public
-    def get_state(self, row, column):
+    def get_state(self):
+        return self.state
+
+    def get_square(self, row, column):
         position = "{}{}".format(row, column)
         position = int(position)
         return self.state[position]

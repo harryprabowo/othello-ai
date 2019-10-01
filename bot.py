@@ -1,22 +1,24 @@
 import constant
 import math
-
+from board import *
 
 class Bot:
     def __init__(self, piece_color):
         self.piece_color = piece_color
-        self.depth = constant.DEFAULTDEPTH
+        self.depth = constant.DEFAULT_DEPTH
 
     def move(self, current_state):
         return self.dfs(current_state, self.piece_color, self.depth, -math.inf, math.inf)
 
     def dfs(self, current_state, current_player, remaining_depth, alpha, beta):
+        print(remaining_depth)
         if remaining_depth == 0:
             return self.__evaluate_state(current_state)
         else:
             possible_step = self.__generate_possible_step(current_state, current_player)
             if not possible_step:
                 if not self.__generate_possible_step(current_state, self.__enemy_of(current_player)):
+                    print(self.__final_value(current_state))
                     return self.__final_value(current_state)
                 else:
                     return -self.dfs(current_state, self.__enemy_of(current_player), remaining_depth - 1, -beta, -alpha)
@@ -51,9 +53,7 @@ class Bot:
 
     def __generate_possible_step(self, current_state, current_player):
         # TODO
-        valid_state = [[0 for row in range(constant.SIZE)] for column in range(constant.SIZE)]
-        valid_step = []
-        return valid_step
+        return []
 
     def __evaluate_state(self, state):
         res = 0
