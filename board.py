@@ -75,3 +75,9 @@ class Board:
 
     def any_possible_move(self, player):
         return any(self.is_legal(square, player) for square in self.main_board())
+
+    def draw_board(self):
+        for i in range(100):
+            print("{}  ".format(self.state[i]), end='')
+            if i % 10 == 9:
+                print()
