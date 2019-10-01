@@ -40,3 +40,18 @@ class Board:
         while self.state[bracket] == opponent:
             bracket += direction
         return None if self.state[bracket] in (BORDER, EMPTY) else bracket
+
+    def make_move(self, move, player):
+        self.state[move] = player
+        for direction in DIRECTIONS:
+            self.make_flips(move, player, direction)
+        return self.state
+
+    def make_flips(self, move, player, direction):
+        bracket = self.find_bracket(move, player, direction)
+        if not bracket:
+            return
+        square = move + direction
+        while square != bracket:
+            self.state[square] = player
+            square += direction
