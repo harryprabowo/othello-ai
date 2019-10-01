@@ -7,6 +7,12 @@ BLACK = 1
 WHITE = 2
 BORDER = 3
 
+def enemy_of(player):
+    if player == WHITE:
+        return BLACK
+    else:
+        return WHITE
+
 # directions
 UP, DOWN, LEFT, RIGHT = -10, 10, -1, 1
 UP_RIGHT, DOWN_RIGHT, DOWN_LEFT, UP_LEFT = -9, 11, 9, -11
