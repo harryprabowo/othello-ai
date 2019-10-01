@@ -60,10 +60,10 @@ class Board:
             square += direction
 
     def has_bracket(self, move, player):
+        bracket = []
         for direction in DIRECTIONS:
-            if not self.find_bracket(move, player, direction):
-                return True
-        return False
+            bracket.append(self.find_bracket(move, player, direction))
+        return any(bracket)
 
     def is_legal(self, move, player):
         return self.state[move] == EMPTY and self.has_bracket(move, player)
@@ -73,3 +73,8 @@ class Board:
 
     def any_possible_move(self, player):
         return any(self.is_legal(square, player) for square in self.main_board())
+
+if __name__ == "__main__":
+    board = Board()
+    possible_moves = board.possible_moves(WHITE)
+    print(possible_moves)
