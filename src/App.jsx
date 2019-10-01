@@ -25,7 +25,6 @@ const App = () => {
         player: player + 1,
         difficulty: difficulty
       }
-      console.log(JSON.stringify(params))
 
       fetch(API_URL + `start`, {
         method: 'POST',
@@ -70,8 +69,6 @@ const App = () => {
       move: move,
       player: turn + 1
     }
-
-    console.log(JSON.stringify(params))
 
     fetch(API_URL + `move`, {
       method: 'POST',
@@ -137,7 +134,6 @@ const App = () => {
 
   return (
     <div id="container">
-      {console.log(turn)}
       <div id="start-modal" className={started ? 'hide' : null}>
         <span onWheel={togglePlayer} onClick={togglePlayer}>{player ? <>be <label style={{ color: 'white', textShadow: "-1px -1px 0 #aaa, 1px -1px 0 #aaa, -1px 1px 0 #aaa, 1px 1px 0 #aaa" }}>white</label></> : <>be <label style={{ color: 'black' }}>black</label></>}</span>
         <br className="responsive-br"/>
