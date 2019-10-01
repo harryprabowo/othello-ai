@@ -189,10 +189,23 @@ body {
   .score {
     font-size: 50pt !important;
   }
+
+  #start-modal {
+    font-size: 24pt;
+    margin: 0;
+  }
+
+  .responsive-br {
+    display: block !important;
+  }
 }
 
 @media only screen and (max-width: 600px) {
   .score {
-    font-size: 20pt !important;
+    font-size: 15pt !important;
   }
+}
+
+.responsive-br {
+  display: none;
 }

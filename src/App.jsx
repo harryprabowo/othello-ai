@@ -18,14 +18,14 @@ const App = () => {
 
   const sessionHandler = begin => {
     if (begin) {
-      setTurn(player)
-
+      player ? setTurn(!player ? 1 : 0) : setTurn(player)
       const params = {
         mode: mode + 1,
         ai: ai,
         player: player + 1,
         difficulty: difficulty
       }
+      console.log(JSON.stringify(params))
 
       fetch(API_URL + `start`, {
         method: 'POST',
@@ -71,6 +71,8 @@ const App = () => {
       player: turn + 1
     }
 
+    console.log(JSON.stringify(params))
+
     fetch(API_URL + `move`, {
       method: 'POST',
       headers: {
@@ -88,7 +90,7 @@ const App = () => {
         } else {
           setAllowedMoves(data.possible_move)
           setBoard(data.state)
-          if (mode) setTurn(!turn ? 1 : 0)
+          if (mode === 1) setTurn(!turn ? 1 : 0)
           countScore(data.state)
         }
       })
@@ -99,9 +101,9 @@ const App = () => {
 
   const pieceColor = num => {
     if (num === 1)
-      return 'black'
+      return player ? 'white' : 'black'
     else if (num === 2)
-      return 'white'
+      return player ? 'black' : 'white'
     else if (num === 3)
       return null
     else return ""
@@ -137,11 +139,13 @@ const App = () => {
     <div id="container">
       {console.log(turn)}
       <div id="start-modal" className={started ? 'hide' : null}>
-        <span onWheel={togglePlayer}>{player ? <>be <label style={{ color: 'white', textShadow: "-1px -1px 0 #aaa, 1px -1px 0 #aaa, -1px 1px 0 #aaa, 1px 1px 0 #aaa" }}>white</label></> : <>be <label style={{ color: 'black' }}>black</label></>}</span>
-        <span onWheel={toggleMode}>against {!mode ? <label style={{ color: 'red' }}>{ai ? `AI` : 'random'}</label> : <label style={{ color: 'black' }}>people.</label>}</span>
+        <span onWheel={togglePlayer} onClick={togglePlayer}>{player ? <>be <label style={{ color: 'white', textShadow: "-1px -1px 0 #aaa, 1px -1px 0 #aaa, -1px 1px 0 #aaa, 1px 1px 0 #aaa" }}>white</label></> : <>be <label style={{ color: 'black' }}>black</label></>}</span>
+        <br className="responsive-br"/>
+        <span onWheel={toggleMode} onClick={toggleMode}>against {!mode ? <label style={{ color: 'red' }}>{ai ? `AI` : 'random'}</label> : <label style={{ color: 'black' }}>people.</label>}</span>
+        <br className="responsive-br"/>
         {
-          !mode ? (
-            <span onWheel={toggleDifficulty} style={{ color: 'black' }}>{difficulty === 1 ? `ez` : difficulty === 2 ? `hm` : `cry`}.</span>
+          !mode && ai ? (
+            <span onWheel={toggleDifficulty} onClick={toggleDifficulty}style={{ color: 'black' }}>{difficulty === 1 ? `ez` : difficulty === 2 ? `hm` : `cry`}.</span>
           ) : null
         }
         <button className={"nav-btn right " + (started ? `hide` : null)} onClick={() => sessionHandler(true)}>→</button>
@@ -151,8 +155,8 @@ const App = () => {
       onClick={() => {if(window.confirm(`Are you sure you want to end the game?`)) sessionHandler(false)}}>
         ←
       </button>
-      <div id="board" className={(!started ? 'hide ' : "") + (turn === player ? "" : 'turn')}>
-        <span className={"score " + (player ? `black` : `white`)} id="score-2">{score(!player ? `black` : `white`)}</span>
+      <div id="board" className={(!started ? 'hide ' : "") + (turn ? "" : 'turn')}>
+        <span className={"score " + (!player ? `black` : `white`)} id="score-2">{score(!player ? `black` : `white`)}</span>
         <table>
           <tbody>
             {
@@ -173,7 +177,7 @@ const App = () => {
             }
           </tbody>
         </table>
-        <span className={"score " + (!player ? `black` : `white`) + " "} id="score-1">{score(player ? `black` : `white`)}</span>
+        <span className={"score " + (player ? `black` : `white`) + " "} id="score-1">{score(player ? `black` : `white`)}</span>
       </div>
       <span className=""></span>
     </div>
