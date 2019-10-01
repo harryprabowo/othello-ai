@@ -25,7 +25,7 @@ class Bot:
             best_value = -999 if (self.piece_color == current_player) else 999
             best_move = 0
             for step in possible_step:
-                next_board = Board(current_state)
+                next_board = Board(current_state.copy())
                 next_board.make_move(step, current_player)
                 next_state = next_board.get_state()
                 value = -self.dfs(next_state, self.__enemy_of(current_player), remaining_depth - 1, -beta, -alpha)[0]
