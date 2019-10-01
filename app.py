@@ -42,11 +42,14 @@ def api():
 
 @app.route('/api/start', methods=['POST'])
 def start():
-    global board, bot, mode, ai
+    global board, bot, mode, ai, DEFAULT_DEPTH
     board = Board()
     current_player = int(request.json['player'])
     mode = int(request.json['mode'])
     ai = int(request.json['ai'])
+    difficulty = int(request.json['difficulty'])
+    if difficulty is not None:
+        DEFAULT_DEPTH = difficulty * 2
     bot = Bot(board, enemy_of(current_player))
     if current_player == constant.WHITE:
         current_player = update_board_by_bot(current_player)
