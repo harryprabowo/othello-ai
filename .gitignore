@@ -103,6 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# VsCode
 .vscode
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
@@ -127,3 +128,6 @@ venv.bak/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# PyCharm
+/.idea
