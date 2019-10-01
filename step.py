@@ -3,3 +3,6 @@ class Step:
         self.row = row
         self.column = column
         self.piece = piece
+
+    def getStateValue(self):
+        return self.row * 10 + self.column;

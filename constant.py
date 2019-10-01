@@ -24,3 +24,7 @@ BOARD_VALUE = [
     0, 100, -20, 10, 5, 5, 10, -20, 100, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
+
+# bound
+MAX_VALUE = sum(map(abs, BOARD_VALUE))
+MIN_VALUE = -MAX_VALUE
