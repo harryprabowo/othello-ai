@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from bot import *
 from board import *
+import random
 
 app = Flask(__name__)
 board = None
@@ -9,14 +10,33 @@ mode = 0
 ai = 0
 
 
+def update_board_by_bot(current_player):
+    global board, mode
+    if mode == 1:
+        bot_move = move_bot(current_player)
+        board.make_move(bot_move, current_player)
+        return enemy_of(current_player)
+    else:
+        return current_player
+
+
+def move_bot(current_player):
+    global ai, bot
+    if ai == 0:
+        return random.choice(board.possible_moves(current_player))
+    else:
+        return bot.move(board.get_state())[1]
+
+
 @app.route('/api/move', methods=['POST'])
 def api():
-    current_player = request.form.get('player')
-    player_move = request.form.get('move')
+    global board
+    current_player = int(request.json['player'])
+    player_move = int(request.json['move'])
     if player_move is not None:
         board.make_move(player_move, current_player)
-    bot_move = bot.move(board.get_state())[1]
-    board.make_move(bot_move, current_player)
+        current_player = enemy_of(current_player)
+    current_player = update_board_by_bot(current_player)
     return jsonify(state=board.get_state(), possible_move=board.possible_moves(current_player))
 
 
@@ -24,12 +44,13 @@ def api():
 def start():
     global board, bot, mode, ai
     board = Board()
-    human_player = int(request.json['player'])
-    mode = request.form.get('mode')
-    ai = request.form.get('ai')
-    bot = Bot(board, enemy_of(human_player))
-    print(board.get_state())
-    return jsonify(state=board.get_state(), possible_move=board.possible_moves(human_player))
+    current_player = int(request.json['player'])
+    mode = int(request.json['mode'])
+    ai = int(request.json['ai'])
+    bot = Bot(board, enemy_of(current_player))
+    if current_player == constant.WHITE:
+        current_player = update_board_by_bot(current_player)
+    return jsonify(state=board.get_state(), possible_move=board.possible_moves(current_player))
 
 
 if __name__ == '__main__':
