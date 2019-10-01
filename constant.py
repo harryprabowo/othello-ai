@@ -1,5 +1,5 @@
 SIZE = 8
-DEFAULT_DEPTH = 2
+DEFAULT_DEPTH = 6
 
 # pieces
 EMPTY = 0

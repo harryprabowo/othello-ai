@@ -2,6 +2,7 @@ import constant
 import math
 from board import *
 
+
 class Bot:
     def __init__(self, board, piece_color):
         self.board = board
@@ -24,7 +25,9 @@ class Bot:
             best_value = -999 if (self.piece_color == current_player) else 999
             best_move = 0
             for step in possible_step:
-                next_state = self.__change_state(step, current_state, current_player)
+                next_board = Board(current_state)
+                next_board.make_move(step, current_player)
+                next_state = next_board.get_state()
                 value = -self.dfs(next_state, self.__enemy_of(current_player), remaining_depth - 1, -beta, -alpha)[0]
                 if current_player == self.piece_color:
                     if best_value < value:
@@ -61,10 +64,6 @@ class Bot:
             modifier = 1 if (state[square] == self.piece_color) else -1
             res += constant.BOARD_VALUE[square] * modifier
         return res
-
-    def __change_state(self, move, state, piece):
-        state[move] = piece
-        return state
 
     def __enemy_of(self, current_player):
         if current_player == constant.WHITE:

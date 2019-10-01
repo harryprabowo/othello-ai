@@ -1,11 +1,13 @@
 from constant import *
-import step
 
 
 class Board:
     # Private
-    def __init__(self):
-        self.__initialize_state()
+    def __init__(self, state=None):
+        if state is None:
+            self.__initialize_state()
+        else:
+            self.state = state
 
     def main_board(self):
         return [square for square in range(11, 89) if 1 <= (square % 10) <= 8]
@@ -73,8 +75,3 @@ class Board:
 
     def any_possible_move(self, player):
         return any(self.is_legal(square, player) for square in self.main_board())
-
-if __name__ == "__main__":
-    board = Board()
-    possible_moves = board.possible_moves(WHITE)
-    print(possible_moves)
