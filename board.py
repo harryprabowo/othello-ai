@@ -7,12 +7,12 @@ class Board:
     def __init__(self):
         self.__initialize_state()
 
-    def __main_board(self):
+    def main_board(self):
         return [square for square in range(11, 89) if 1 <= (square % 10) <= 8]
 
     def __initialize_state(self):
         self.state = [BORDER] * 100
-        for square in self.__main_board():
+        for square in self.main_board():
             self.state[square] = EMPTY
 
         self.__initialize_start_piece()
@@ -55,3 +55,18 @@ class Board:
         while square != bracket:
             self.state[square] = player
             square += direction
+
+    def has_bracket(self, move, player):
+        for direction in DIRECTIONS:
+            if not self.find_bracket(move, player, direction):
+                return True
+        return False
+
+    def is_legal(self, move, player):
+        return self.state[move] == EMPTY and self.has_bracket(move, player)
+
+    def possible_moves(self, player):
+        return [square for square in self.main_board() if self.is_legal(square, player)]
+
+    def any_possible_move(self, player):
+        return any(self.is_legal(square, player) for square in self.main_board())
