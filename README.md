@@ -11,6 +11,8 @@ yarn start
 and the backend:
 
 ```
+pip install flask
+pip install flask-cors
 yarn start:api
 ```
 
