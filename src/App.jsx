@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.scss';
 import { isNullOrUndefined } from 'util';
 
-const API_URL = `http://localhost:8080/api/`
+const API_URL = `https://othello-ai-api.herokuapp.com/`
 
 const App = () => {
   const [started, setStart] = useState(false)
