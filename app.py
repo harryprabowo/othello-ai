@@ -30,6 +30,10 @@ def move_bot(current_player):
     else:
         return bot.move(board.get_state())[1]
 
+@app.route('/', methods=['POST'])
+@cross_origin()
+def helloWorld():
+  return "Hello, cross-origin-world!"
 
 @app.route('/api/move', methods=['POST'])
 @cross_origin()
