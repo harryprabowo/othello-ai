@@ -10,7 +10,6 @@ class Bot:
         self.depth = depth
 
     def move(self, current_state):
-        print(self.depth)
         return self.dfs(current_state, self.piece_color, self.depth, -math.inf, math.inf)
 
     def dfs(self, current_state, current_player, remaining_depth, alpha, beta):

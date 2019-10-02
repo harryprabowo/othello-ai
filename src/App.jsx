@@ -82,8 +82,10 @@ const App = () => {
         if (data.possible_move.length === 0) {
           if(scoreWhite === scoreBlack) alert(`What! A tie!?`)
           else (scoreWhite > scoreBlack ? !player : player) ? alert(`You have skills.`) :  alert('Too bad.')
-
-          sessionHandler(false)
+          setAllowedMoves(data.possible_move)
+          setBoard(data.state)
+          if (mode === 1) setTurn(!turn ? 1 : 0)
+          countScore(data.state)
         } else {
           setAllowedMoves(data.possible_move)
           setBoard(data.state)
