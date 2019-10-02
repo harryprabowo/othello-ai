@@ -35,7 +35,7 @@ def move_bot(current_player):
 def helloWorld():
   return "Hello, cross-origin-world!"
 
-@app.route('/api/move', methods=['POST'])
+@app.route('/move', methods=['POST'])
 @cross_origin()
 def api():
     global board
@@ -48,7 +48,7 @@ def api():
     return jsonify(state=board.get_state(), possible_move=board.possible_moves(current_player))
 
 
-@app.route('/api/start', methods=['POST'])
+@app.route('/start', methods=['POST'])
 @cross_origin()
 def start():
     global board, bot, mode, ai, DEFAULT_DEPTH
