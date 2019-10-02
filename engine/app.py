@@ -54,8 +54,9 @@ def start():
     ai = int(request.json['ai'])
     difficulty = int(request.json['difficulty'])
     if difficulty is not None:
-        DEFAULT_DEPTH = difficulty * 2
-    bot = Bot(board, enemy_of(current_player))
+        bot = Bot(board, enemy_of(current_player), difficulty*2)
+    else:
+        bot = Bot(board, enemy_of(current_player))
     if current_player == constant.WHITE:
         current_player = update_board_by_bot(current_player)
     return jsonify(state=board.get_state(), possible_move=board.possible_moves(current_player))
